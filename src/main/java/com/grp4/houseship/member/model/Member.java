@@ -23,12 +23,16 @@ import org.springframework.stereotype.Component;
 @Entity @Table(name="member")
 public class Member implements Serializable {
 	
+
+
+
+
 	private static final long serialVersionUID = 1L;  //Bean要可序列化
 	//為什麼序列化要有private,static??
 	
-	@Id @Column(name="ID")
+	@Id @Column(name="USER_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int user_id;
 	@Column(name="ACCOUNT",unique=true)
 	private String account;
 	@Column(name="HASHED_PWD")
@@ -50,7 +54,7 @@ public class Member implements Serializable {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "member_roles",
-			joinColumns = @JoinColumn(name = "account" ),
+			joinColumns = @JoinColumn(name = "user_id" ),
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
 	private Set<Role> roles = new HashSet<>();
@@ -60,10 +64,11 @@ public class Member implements Serializable {
 		
 	}
 	
-	public Member(int id, String account, String hashed_pwd, String salt, String lastname, String firstname,
+	
+	public Member(int user_id, String account, String hashed_pwd, String salt, String lastname, String firstname,
 			String birthday, String email, String m_address, String phone, String mempic) {
 	
-		this.id=id;
+		this.user_id=user_id;
 		this.account = account;
 		this.hashed_pwd = hashed_pwd;
 		this.lastname = lastname;
@@ -73,6 +78,15 @@ public class Member implements Serializable {
 		this.m_address = m_address;
 		this.phone = phone;
 		this.mempic = mempic;
+	}
+	
+	public int getUser_id() {
+		return user_id;
+	}
+	
+	
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
 	
 	public String getAccount() {
@@ -182,4 +196,11 @@ public class Member implements Serializable {
 		this.mempic = mempic;
 	}
 
+	public Set<Role> getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 }
